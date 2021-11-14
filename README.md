@@ -2,7 +2,9 @@
 A tool for [(semi-){un-(tethered jailbreak)}] of iOS 10.3.4 ~~32-bit devices~~ iPhone 5 with checkm8 BootROM exploit.  
 
 ## Note
-All at your own risk!  
+- All at your own risk!  
+- The package used for this jailbreak can be obtained via Cydia from the following repository.  
+`https://dora2ios.github.io/repo`  
 
 ## Supported devices
 - iPhone 5 (N41/N42) - iOS 10.3.4  
