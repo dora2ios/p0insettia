@@ -27,7 +27,7 @@ Please refer to the build/ directory.
 It uses an IPA App based jailbreak. (ETA SON)   
 
 ## untethered jailbreak
-It uses an iBoot(7) exploit based jailbreak. (ETA SON)   
+It uses an iBoot(iOS 7 iBoot) exploit based jailbreak. (ETA SON)   
 
 ## Note for this jailbreak environment (iOS 10.3 or higher)  
 This jailbreak will not apply the nuke sandbox patch used by h3lix.  
