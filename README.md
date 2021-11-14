@@ -42,3 +42,12 @@ Some other jailbreak apps may require this entitlement.
 <key>com.apple.private.security.no-container</key>
 <true/>
 ```
+
+## credits
+- @axi0mX for the [checkm8 exploit](https://github.com/axi0mX/ipwndfu)  
+- @LinusHenze for the [Fugu](https://github.com/LinusHenze/Fugu)  
+- @planetbeing for [XPwn](https://github.com/planetbeing/xpwn) and [ios-jailbreak-patchfinder](https://github.com/planetbeing/ios-jailbreak-patchfinder)  
+- @xerub for the [ibex](https://github.com/xerub/ibex)  
+- @libimobiledevice for the [libirecovery](https://github.com/libimobiledevice/libirecovery)  
+- @synackuk for the [atropine](https://github.com/synackuk/atropine)  
+- checkra1n team for the kernel patche methods  
