@@ -1,5 +1,6 @@
 
 .DS_Store
+package/
 build/dl_files
 build/image3
 build/ipwnder_lite
