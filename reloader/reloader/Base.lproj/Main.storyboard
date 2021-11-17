@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7eO-fb-By5">
+                                <rect key="frame" x="4" y="64" width="367" height="41"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="go:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wMO-1n-Lx5"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="All are at your own risk." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="27N-DX-iwQ">
+                                <rect key="frame" x="16" y="629.5" width="343" height="21.5"/>
+                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="18"/>
+                                <color key="textColor" systemColor="systemRedColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="警告 (For Residents of Japan)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yId-0p-euI">
+                                <rect key="frame" x="16" y="346" width="343" height="22"/>
+                                <fontDescription key="fontDescription" type="system" weight="black" pointSize="18"/>
+                                <color key="textColor" systemColor="systemRedColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is an app for put devices (jailbroken with p0insettia) into jailbreak state again without going through DFU mode." lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ix8-03-wzM">
+                                <rect key="frame" x="16" y="137" width="343" height="54"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nhl-86-fyQ">
+                                <rect key="frame" x="24" y="564" width="327" height="57.5"/>
+                                <string key="text">使用の際は必ず公式サイトから入手したものを使用してください。以下のページから、このアプリケーションを含むソースコードを確認することができます。
+https://github.com/dora2-iOS/p0insettia</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AgK-4A-4yZ">
+                                <rect key="frame" x="8" y="199" width="359" height="30.5"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Add dora2ios System Repository">
+                                    <fontDescription key="titleFontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="add_repo:" destination="BYZ-38-t0r" eventType="touchUpInside" id="grl-t0-Bef"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="24" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yWO-VT-D64">
+                                <rect key="frame" x="24" y="376" width="327" height="172"/>
+                                <mutableString key="text">このアプリは、LegacyなJailbreakを学習および実証するために作成されたものになります。
+これらはすべて教育・学習目的で提供されるものであり、これらを悪用することを固く禁じます。
+また、いかなる場合において、製作者および配布者がこれらのツールに対しての責任を負うことは一切無いものとします。このツールの使用は全て自己責任であり、あなた自身の操作によってのみ実行されます。これらのツールをダウンロードした時点で全てあなた自身の責任となります。これに同意できない場合、ツールのダウンロード、使用を一切禁じます。
+</mutableString>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="Ix8-03-wzM" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="4Mz-tC-xUH"/>
+                            <constraint firstItem="27N-DX-iwQ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="8ny-3a-xaY"/>
+                            <constraint firstAttribute="trailing" secondItem="Nhl-86-fyQ" secondAttribute="trailing" constant="24" id="99r-Dz-lCm"/>
+                            <constraint firstItem="Nhl-86-fyQ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="24" id="9Ob-5t-Ver"/>
+                            <constraint firstItem="7eO-fb-By5" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="64" id="Cdv-kU-hNh"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="7eO-fb-By5" secondAttribute="trailing" constant="4" id="EIe-jL-h2y"/>
+                            <constraint firstItem="AgK-4A-4yZ" firstAttribute="top" secondItem="Ix8-03-wzM" secondAttribute="bottom" constant="8" id="Mno-cy-OaH"/>
+                            <constraint firstItem="yWO-VT-D64" firstAttribute="top" secondItem="yId-0p-euI" secondAttribute="bottom" constant="8" id="OUs-1E-N8l"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="yWO-VT-D64" secondAttribute="trailing" constant="24" id="RJR-C8-bOv"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="yId-0p-euI" secondAttribute="trailing" constant="16" id="ROj-YA-gy2"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="27N-DX-iwQ" secondAttribute="bottom" constant="16" id="Rsu-GA-pyt"/>
+                            <constraint firstItem="AgK-4A-4yZ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="SdR-a6-s7D"/>
+                            <constraint firstItem="7eO-fb-By5" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="4" id="XVo-32-ejg"/>
+                            <constraint firstItem="Ix8-03-wzM" firstAttribute="top" secondItem="7eO-fb-By5" secondAttribute="bottom" constant="32" id="b74-Cp-qPy"/>
+                            <constraint firstItem="yId-0p-euI" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="bZV-Hn-9oJ"/>
+                            <constraint firstItem="27N-DX-iwQ" firstAttribute="top" secondItem="Nhl-86-fyQ" secondAttribute="bottom" constant="8" id="bak-Hb-jQl"/>
+                            <constraint firstItem="Nhl-86-fyQ" firstAttribute="top" secondItem="yWO-VT-D64" secondAttribute="bottom" constant="16" id="c0B-VZ-1TW"/>
+                            <constraint firstItem="yWO-VT-D64" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="24" id="iGY-mC-stG"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="AgK-4A-4yZ" secondAttribute="trailing" constant="8" id="iSt-Ce-F8A"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="27N-DX-iwQ" secondAttribute="trailing" constant="16" id="r5S-Lc-tMS"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Ix8-03-wzM" secondAttribute="trailing" constant="16" id="tL1-gI-hUb"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="add_btn" destination="AgK-4A-4yZ" id="Fk9-GA-Ic6"/>
+                        <outlet property="box1" destination="Ix8-03-wzM" id="XFu-Yq-WFU"/>
+                        <outlet property="box2" destination="yId-0p-euI" id="bwf-ba-af3"/>
+                        <outlet property="box3" destination="yWO-VT-D64" id="nVQ-5s-11P"/>
+                        <outlet property="box4" destination="27N-DX-iwQ" id="G1E-ie-YdV"/>
+                        <outlet property="box5" destination="Nhl-86-fyQ" id="MKs-se-vPV"/>
+                        <outlet property="go_btn" destination="7eO-fb-By5" id="jcw-Mv-alX"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-26.399999999999999" y="68.815592203898049"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>
