@@ -24,7 +24,10 @@ ramdisk_gen.sh
 Please refer to the build/ directory.  
 
 ## semi-untethered jailbreak
-It uses an IPA App based jailbreak. (ETA SON)   
+It uses an IPA App based jailbreak. (reloader/ directory)   
+In order to use this, you need to jailbreak your device with "semi-tethered jailbreak" first.  
+The pre-built IPA file can be obtained from: [p0insettia](https://dora2ios.web.app/p0insettia.html)  
+You can use ReProvision Reborn (via [Packix](https://repo.packix.com/)) or similar to install and use IPA files on your device. All at your own risk.   
 
 ## untethered jailbreak
 It uses an iBoot(iOS 7 iBoot) exploit based jailbreak. (ETA SON)   
