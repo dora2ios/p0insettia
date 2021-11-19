@@ -1,6 +1,6 @@
 /*
  * injector.c
- * copyright (C) 2021/11/14 sauRdev
+ * copyright (C) 2021/11/14 sakuRdev
  *
  *
  * This program is free software: you can redistribute it and/or modify

@@ -1,6 +1,6 @@
 @ shellcode.s
 @
-@ copyright (C) 2021/11/14 sauRdev
+@ copyright (C) 2021/11/14 sakuRdev
 @
 @  Permission is hereby granted, free of charge, to any person obtaining a copy
 @  of this software and associated documentation files (the "Software"), to deal
