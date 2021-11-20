@@ -29,10 +29,10 @@
 #include <partial.h>
 
 #define N42 (1) // n41/n42 only
-#define A6_IBOOT_LOADADDR_BASE (0x80000000)
-#define A6_IBOOT_IMAGE_BASE (0xBFF00000)
+#define A6_IBOOT_LOADADDR_BASE  (0x80000000)
+#define A6_IBOOT_IMAGE_BASE     (0xBFF00000)
 
-#define IBOOT_DATA_START (0x40)
+#define IBOOT_DATA_START        (0x40)
 
 static int open_file(const char *file, size_t *sz, void **buf){
     FILE *fd = fopen(file, "r");
