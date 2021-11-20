@@ -230,7 +230,7 @@ static void patch_iboot(const char* path)
         *(uint32_t*)(buf+IBOOT_DATA_START+shcStart+i) = 0xfde9f7d4; i+=4; // bl         _image_load_type
         *(uint16_t*)(buf+IBOOT_DATA_START+shcStart+i) = 0xb5f0;     i+=2; // push       {r4, r5, r6, r7, lr}
         *(uint16_t*)(buf+IBOOT_DATA_START+shcStart+i) = 0xaf03;     i+=2; // add        r7, sp, #0xc
-        *(uint32_t*)(buf+IBOOT_DATA_START+shcStart+i) = 0xbacdf7b9; i+=4; // b.w        _mount_and_boot_system
+        *(uint32_t*)(buf+IBOOT_DATA_START+shcStart+i) = 0xbacdf7b9; i+=4; // b.w        _mount_and_boot_system+4
         *(uint16_t*)(buf+IBOOT_DATA_START+shcStart+i) = 0xbf00;     i+=2; // nop
         *(uint32_t*)(buf+IBOOT_DATA_START+shcStart+i) = 0xbff47af0; i+=4; // :: IMAGE3_SIZE
         *(uint32_t*)(buf+IBOOT_DATA_START+shcStart+i) = 0xbfc00000; i+=4; // :: PAYLOAD_BASE
