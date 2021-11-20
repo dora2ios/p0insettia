@@ -198,7 +198,7 @@ static void patch_iboot(const char* path)
     /*
      * NOP out the call to env_set("boot-partition", "0", 0) to prevent the value of boot-partition from being reset to "0" on sys_setup_default_environment().
      */
-    printf("[%s] Apply env-set boot-partition patch: 0x%08x\n", __FUNCTION__, bootPartitionBl);
+    printf("[%s] Apply env-set boot-partition patch: 0x%08x\n", __FUNCTION__, envSetBootPartition);
     *(uint16_t*)(buf+IBOOT_DATA_START+envSetBootPartition)  = 0xbf00;
     
     
