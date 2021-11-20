@@ -4,6 +4,7 @@ package/
 build/dl_files
 build/image3
 build/ipwnder_lite
+untether/image3
 iphoneos-arm/launchd/launchd
 iphoneos-arm/rdsk/restored_external
 iphoneos-arm/iboot/payload

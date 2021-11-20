@@ -22,7 +22,7 @@
 #include "lib/lib.h"
 
 #define FRAMEBUFFER_SEARCH "framebuffer"
-#define GET_ENV_UINT_SEARCH "boot-partition"
+#define GET_ENV_UINT_SEARCH "bootdelay"
 #define DISPLAY_TIMING_SEARCH "display-timing"
 #define GET_ENV_SEARCH "boot-device"
 /*
