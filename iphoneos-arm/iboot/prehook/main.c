@@ -25,6 +25,8 @@
 #include "drivers/drivers.h"
 #include "drivers/display/display.h"
 
+#include "../version.h"
+
 #define IBOOT_SIZE      0x48000
 #define PAYLOAD_BASE    0xbfc00000
 #define TRAMPOLINE      0xdeadbeef
@@ -41,30 +43,40 @@ unsigned int display_height;
 
 get_env_uint_t _get_env_uint;
 get_env_t _get_env;
+printf_t _printf;
+
+#define DEBUGLOG(x, ...) do { printf("[DEBUG] "x"", ##__VA_ARGS__); } while(0)
+#define FOUND(x, ...) do { printf("[Found] "x"", ##__VA_ARGS__); } while(0)
 
 static void print_banner() {
-    fb_print_row('=');
-    printf(":: p0insettia pre-patcher payload\n");
+    printf("=======================================\n");
     printf("::\n");
-    printf("::   BUILD_VERSION: 1.1 [1B241]\n");
+    printf(":: p0insettia pre-patcher payload, Copyright 2021, dora2ios/sakuRdev.\n");
+    printf("::\n");
+    printf("::\tBUILD_TAG: payload-%d.%d.%d\n", systemVer, majorVer, minorVer);
+    printf("::\n");
 #ifdef DEBUG
     printf("::   BUILD_STYLE: DEBUG\n");
 #else
     printf("::   BUILD_STYLE: RELEASE\n");
 #endif
-    printf("::   Copyright 2021, dora2ios.\n");
-    fb_print_row('=');
-    printf("* Thanks to:\n");
-    printf("axi0mX\n");
-    printf("geohot\n");
-    printf("iH8sn0w\n");
-    printf("JonathanSeals\n");
-    printf("planetbeing\n");
-    printf("posixninja\n");
-    printf("qwertyoruiopz\n");
-    printf("synackuk\n");
-    printf("xerub\n");
-    fb_print_row('-');
+    printf("::\n");
+    printf("=======================================\n");
+    printf("\n");
+    printf("preparing to setup the payload...\n");
+    printf("---------------------------------------\n");
+    printf(":: Credits:\n");
+    printf("::  axi0mX\n");
+    printf("::  geohot\n");
+    printf("::  iH8sn0w\n");
+    printf("::  JonathanSeals\n");
+    printf("::  planetbeing\n");
+    printf("::  posixninja\n");
+    printf("::  qwertyoruiopz\n");
+    printf("::  synackuk\n");
+    printf("::  xerub\n");
+    printf("---------------------------------------\n");
+    printf("\n");
 }
 
 void *memcpy(void *dst, const void *src, size_t len)
@@ -119,6 +131,7 @@ _main()
     _get_env_uint = find_get_env_uint();
     framebuffer_address = find_framebuffer_address();
     _get_env = find_get_env();
+    _printf = find_printf();
     display_width = find_display_width();
     display_height = find_display_height();
     
@@ -141,19 +154,19 @@ _main()
     print_banner();
     
 #ifdef DEBUG
-    printf("BASE_ADDRESS: 0x%x\n", base_address);
-    printf("GET_ENV_UINT: 0x%x\n", _get_env_uint);
-    printf("FRAMEBUFFER: 0x%x\n", framebuffer_address);
-    printf("GET_ENV: 0x%x\n", _get_env);
-    printf("DISPLAY: %d, %d\n", display_width, display_height);
+    DEBUGLOG("BASE_ADDRESS: 0x%x\n", base_address);
+    DEBUGLOG("GET_ENV_UINT: 0x%x\n", _get_env_uint);
+    DEBUGLOG("FRAMEBUFFER: 0x%x\n", framebuffer_address);
+    DEBUGLOG("GET_ENV: 0x%x\n", _get_env);
+    DEBUGLOG("PRINTF: 0x%x\n", _printf);
     
-    printf("Found dt_load: 0x%x\n", dt_load);
-    printf("Found mount_and_boot_system: 0x%x\n", mount_and_boot_system);
-    printf("Found hook_point: 0x%x\n", hook_point);
+    FOUND("dt_load: 0x%x\n", dt_load);
+    FOUND("mount_and_boot_system: 0x%x\n", mount_and_boot_system);
+    FOUND("hook_point: 0x%x\n", hook_point);
 #else
-    printf("Found dt_load\n");
-    printf("Found mount_and_boot_system\n");
-    printf("Found hook_point\n");
+    FOUND("dt_load\n");
+    FOUND("mount_and_boot_system\n");
+    FOUND("hook_point\n");
 #endif
     
     memcpy((void*)(PAYLOAD_BASE), (void*)(TRAMPOLINE), (uint32_t)(payload_len));

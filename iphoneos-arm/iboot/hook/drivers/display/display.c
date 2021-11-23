@@ -81,10 +81,16 @@ static void fb_scrollup() {
 	fb_y--;
 }
 
+typedef int (*printf_t)(const char *fmt, ...) __attribute__((format(__printf, 1, 2)));
+extern printf_t _printf;
+
 void fb_putc(char c) {
 	if(!framebuffer_address){
 		return;
 	}
+    
+    _printf("%c", c);
+    
 	if(c == '\r') {
 		fb_x = 0;
 

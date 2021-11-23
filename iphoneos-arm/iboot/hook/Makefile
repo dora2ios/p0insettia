@@ -23,7 +23,7 @@ GNUARM_PREFIX ?= /opt/gnuarm/bin/arm-none-eabi-
 
 CC = $(GNUARM_PREFIX)gcc
 CFLAGS = -Wall -W -pedantic
-CFLAGS += -Wno-long-long
+CFLAGS += -Wno-long-long -Wno-format -Wno-variadic-macros
 CFLAGS += -O3 -DDEBUG
 #CFLAGS += -mthumb -march=armv7
 CFLAGS += -fcall-used-r9

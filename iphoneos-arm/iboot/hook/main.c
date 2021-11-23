@@ -26,6 +26,8 @@
 #include "drivers/drivers.h"
 #include "drivers/display/display.h"
 
+#include "../version.h"
+
 #include "patchfinder.h"
 #include "kernel.h"
 #include "args.h"
@@ -47,31 +49,43 @@ unsigned int display_height;
 
 get_env_uint_t _get_env_uint;
 get_env_t _get_env;
+printf_t _printf;
+
+#define DEBUGLOG(x, ...) do { printf("[DEBUG] "x"", ##__VA_ARGS__); } while(0)
+#define FOUND(x, ...) do { printf("[Found] "x"", ##__VA_ARGS__); } while(0)
+#define ERROR(x) do { printf("[ERROR] "x""); } while(0)
+#define PATCHED(x) do { printf("[PATCHED] "x""); } while(0)
 
 static void print_banner() {
-    fb_print_row('=');
-    printf(":: p0insettia payload\n");
+    printf("=======================================\n");
     printf("::\n");
-    printf("::   BUILD_VERSION: 2.0 [2A167]\n");
+    printf(":: p0insettia payload, Copyright 2021, dora2ios/sakuRdev.\n");
+    printf("::\n");
+    printf("::\tBUILD_TAG: payload-%d.%d.%d\n", systemVer, majorVer, minorVer);
+    printf("::\n");
 #ifdef DEBUG
-    printf("::   BUILD_STYLE: DEBUG\n");
+    printf("::\tBUILD_STYLE: DEBUG\n");
 #else
-    printf("::   BUILD_STYLE: RELEASE\n");
+    printf("::\tBUILD_STYLE: RELEASE\n");
 #endif
-    printf("::   Copyright 2021, dora2ios.\n");
-    fb_print_row('=');
-    printf("* Thanks to:\n");
-    printf("axi0mX\n");
-    printf("geohot\n");
-    printf("iH8sn0w\n");
-    printf("JonathanSeals\n");
-    printf("planetbeing\n");
-    printf("posixninja\n");
-    printf("qwertyoruiopz\n");
-    printf("synackuk\n");
-    printf("xerub\n");
-    printf("checkra1n team\n");
-    fb_print_row('-');
+    printf("::\n");
+    printf("=======================================\n");
+    printf("\n");
+    printf("preparing to setup the payload...\n");
+    printf("---------------------------------------\n");
+    printf(":: Credits:\n");
+    printf("::  axi0mX\n");
+    printf("::  geohot\n");
+    printf("::  iH8sn0w\n");
+    printf("::  JonathanSeals\n");
+    printf("::  planetbeing\n");
+    printf("::  posixninja\n");
+    printf("::  qwertyoruiopz\n");
+    printf("::  synackuk\n");
+    printf("::  xerub\n");
+    printf("::  checkra1n team\n");
+    printf("---------------------------------------\n");
+    printf("\n");
 }
 
 void wk8(uint32_t addr, uint8_t val){
@@ -172,42 +186,42 @@ make_b_w(int pos, int tgt)
 
 static void patch_tfp0(uint32_t p, uint32_t c){
     wk16(p, 0xbf00);
-    printf("Apply task_for_pid::pid_check patch\n");
+    PATCHED("task_for_pid::pid_check patch\n");
     
     wk8(c+1, 0xe0);
-    printf("Apply convert_port_to_locked_task patch\n");
+    PATCHED("convert_port_to_locked_task patch\n");
 }
 
 static void patch_vm_fault_enter(uint32_t addr){
     wk32(addr, 0x0b01f04f);
-    printf("Apply vm_fault_enter patch\n");
+    PATCHED("vm_fault_enter patch\n");
 }
 
 static void patch_vm_map_enter(uint32_t addr){
     wk32(addr, 0xbf00bf00);
-    printf("Apply vm_map_enter patch\n");
+    PATCHED("vm_map_enter patch\n");
 }
 
 static void patch_vm_map_protect(uint32_t addr){
     wk32(addr, 0xbf00bf00);
-    printf("Apply vm_map_protect patch\n");
+    PATCHED("vm_map_protect patch\n");
 }
 
 static void patch_csops(uint32_t addr){
     wk32(addr, 0xbf00bf00);
     wk16(addr+4, 0xbf00);
-    printf("Apply csops patch\n");
+    PATCHED("csops patch\n");
 }
 
 static void patch_mount(uint32_t addr){
     wk8((addr+1), 0xe0);
-    printf("Apply mount patch\n");
+    PATCHED("mount patch\n");
 }
 
 static void patch_mount_union(uint32_t addr){
     wk32(addr, 0xbf00bf00);
     wk16(addr+4, 0xbf00);
-    printf("Apply union mount patch\n");
+    PATCHED("union mount patch\n");
 }
 
 static void patch_mapForIO(uint32_t addr, uint32_t ptr, uint32_t ret1){
@@ -216,12 +230,12 @@ static void patch_mapForIO(uint32_t addr, uint32_t ptr, uint32_t ret1){
     
     wk32(ptr, ret1);
     
-    printf("Apply mapForIO patch\n");
+    PATCHED("mapForIO patch\n");
 }
 
 static void patch_sbcall_debugger(uint32_t addr){
     wk32(addr, 0xbf00bf00);
-    printf("Apply sbcall_debugger patch\n");
+    PATCHED("sbcall_debugger patch\n");
 }
 
 static void patch_amfi_ret(uint32_t addr, uint32_t s, uint32_t kernel_base)
@@ -229,7 +243,7 @@ static void patch_amfi_ret(uint32_t addr, uint32_t s, uint32_t kernel_base)
     uint32_t unbaseAddr = addr - kernel_base;
     uint32_t unbaseShc = s - kernel_base;
     uint32_t p = make_b_w(unbaseAddr, unbaseShc);
-    printf("Apply amfi ret -> shellcode: 0x%08x\n", s+1);
+    printf("[AMFI] amfi ret -> shellcode: 0x%08x\n", s+1);
     wk32(addr, p);
 }
 
@@ -269,7 +283,7 @@ static void patch_amfi_cred_label_update_execve(uint32_t addr){
     
     wk32(addr, 0xbf00bf00);
     wk32((addr+4+1), 0xe0);
-    printf("Apply amfi_cred_label_update_execve patch\n");
+    printf("[AMFI] amfi_cred_label_update_execve patch\n");
     
 }
 
@@ -280,7 +294,7 @@ static void patch_amfi_vnode_check_signature(uint32_t addr){
     wk32(addr+8, 0xbf00bf00);
     wk32(addr+12, 0xbf00bf00);
     wk32(addr+16, 0xbf00bf00);
-    printf("Apply amfi_vnode_check_signature patch\n");
+    printf("[AMFI] amfi_vnode_check_signature patch\n");
 }
 
 static void patch_amfi_loadEntitlementsFromVnode(uint32_t addr){
@@ -319,7 +333,7 @@ static void patch_amfi_loadEntitlementsFromVnode(uint32_t addr){
     wk32(addr, 0xbf00bf00);
     wk16(addr+4, 0xbf00);
     wk16(addr+6, 0x2001);
-    printf("Apply amfi_loadEntitlementsFromVnode patch\n");
+    printf("[AMFI] amfi_loadEntitlementsFromVnode patch\n");
 }
 
 static void patch_amfi_vnode_check_exec(uint32_t addr){
@@ -350,7 +364,7 @@ static void patch_amfi_vnode_check_exec(uint32_t addr){
     wk32(addr, 0xbf00bf00);
     wk32(addr+4, 0xbf00bf00);
     wk32(addr+8, 0xbf00bf00);
-    printf("Apply amfi_vnode_check_exec patch\n");
+    printf("[AMFI] amfi_vnode_check_exec patch\n");
 }
 
 void loop(void){
@@ -404,6 +418,9 @@ _main(void* boot, void *ptr, boot_args *arg)
     _get_env_uint = find_get_env_uint();
     framebuffer_address = find_framebuffer_address();
     _get_env = find_get_env();
+    
+    _printf = find_printf();
+    
     display_width = find_display_width();
     display_height = find_display_height();
     
@@ -414,27 +431,12 @@ _main(void* boot, void *ptr, boot_args *arg)
     print_banner();
     
 #ifdef DEBUG
-    printf("BASE_ADDRESS: 0x%x\n", base_address);
-    printf("GET_ENV_UINT: 0x%x\n", _get_env_uint);
-    printf("FRAMEBUFFER: 0x%x\n", framebuffer_address);
-    printf("GET_ENV: 0x%x\n", _get_env);
-    printf("DISPLAY: %d, %d\n", display_width, display_height);
-    printf("PREPARE_AND_JUMP: 0x%x\n", prepare_and_jump);
-    
-    printf("BOOTARGS STRUCT\n");
-    printf("Revision: 0x%04x\n", arg->Revision);
-    printf("Version: 0x%04x\n", arg->Version);
-    printf("virtBase: 0x%08x\n", arg->virtBase);
-    printf("physBase: 0x%08x\n", arg->physBase);
-    printf("memSize: 0x%08x\n", arg->memSize);
-    printf("topOfKernelData: 0x%08x\n", arg->topOfKernelData);
-    printf("Video: 0x%08x\n", arg->Video);
-    printf("machineType: 0x%08x\n", arg->machineType);
-    printf("deviceTreeP: 0x%08x\n", arg->deviceTreeP);
-    printf("deviceTreeLength: 0x%08x\n", arg->deviceTreeLength);
-    printf("CommandLine: 0x%08x\n", arg->CommandLine);
-    printf("bootFlags: 0x%08x\n", arg->bootFlags);
-    printf("memSizeActual: 0x%08x\n", arg->memSizeActual);
+    DEBUGLOG("BASE_ADDRESS: 0x%x\n", base_address);
+    DEBUGLOG("GET_ENV_UINT: 0x%x\n", _get_env_uint);
+    DEBUGLOG("FRAMEBUFFER: 0x%x\n", framebuffer_address);
+    DEBUGLOG("GET_ENV: 0x%x\n", _get_env);
+    DEBUGLOG("PRINTF: 0x%x\n", _printf);
+    DEBUGLOG("PREPARE_AND_JUMP: 0x%x\n", prepare_and_jump);
 #endif
     
     gVirtBase = arg->virtBase;
@@ -442,281 +444,281 @@ _main(void* boot, void *ptr, boot_args *arg)
     slide = gVirtBase - gPhysBase;
     
 #ifdef DEBUG
-    printf("Found virtBase: 0x%x\n", gVirtBase);
-    printf("Found physBase: 0x%x\n", gPhysBase);
-    printf("KASLR slide: 0x%x\n", slide);
+    FOUND("gVirtBase: 0x%x\n", gVirtBase);
+    FOUND("gPhysBase: 0x%x\n", gPhysBase);
+    FOUND("KASLR slide: 0x%x\n", slide);
 #else
-    printf("Found virtBase\n");
-    printf("Found physBase\n");
+    FOUND("gVirtBase\n");
+    FOUND("gPhysBase\n");
 #endif
     
     printf("BootArgs: %s\n", arg->CommandLine);
     
     /*** patchfinder:: find sym ***/
-    printf("Searching Kernel sym...\n");
+    printf("[*] Searching Kernel sym...\n");
     
     i_can_has_debugger = find_PE_i_can_has_debugger(gPhysBase, gVirtBase);
     if(i_can_has_debugger == 0){
-        printf("ERROR: Failed to get _PE_i_can_has_debugger\n");
+        ERROR("Failed to get _PE_i_can_has_debugger\n");
         goto out;
     }
 #ifdef DEBUG
-    printf("Found _PE_i_can_has_debugger: 0x%x\n", i_can_has_debugger);
+    FOUND("_PE_i_can_has_debugger: 0x%x\n", i_can_has_debugger);
 #else
-    printf("Found _PE_i_can_has_debugger\n");
+    FOUND("_PE_i_can_has_debugger\n");
 #endif
     
     
     vfsContextCurrent = find_vfs_context_current(gPhysBase, gVirtBase);
     if(vfsContextCurrent == 0){
-        printf("ERROR: Failed to get _vfs_context_current\n");
+        ERROR("Failed to get _vfs_context_current\n");
         goto out;
     }
 #ifdef DEBUG
-    printf("Found _vfs_context_current: 0x%x\n", vfsContextCurrent);
+    FOUND("_vfs_context_current: 0x%x\n", vfsContextCurrent);
 #else
-    printf("Found _vfs_context_current\n");
+    FOUND("_vfs_context_current\n");
 #endif
     
     
     vnodeGetattr = find_vnode_getattr(gPhysBase, gVirtBase);
     if(vnodeGetattr == 0){
-        printf("ERROR: Failed to get _vnode_getattr\n");
+        ERROR("Failed to get _vnode_getattr\n");
         goto out;
     }
 #ifdef DEBUG
-    printf("Found _vnode_getattr: 0x%x\n", vnodeGetattr);
+    FOUND("_vnode_getattr: 0x%x\n", vnodeGetattr);
 #else
-    printf("Found _vnode_getattr\n");
+    FOUND("_vnode_getattr\n");
 #endif
     
     
     /*** patchfinder:: find offsets ***/
-    printf("Searching Kernel offsets...\n");
+    printf("[*] Searching Kernel offsets...\n");
     
     pid_check = find_pid_check(gPhysBase, KERNEL_SIZE);
     if(pid_check == 0){
-        printf("ERROR: Failed to get pid_check\n");
+        ERROR("Failed to get pid_check\n");
         goto out;
     }
 #ifdef DEBUG
-    printf("Found pid_check: 0x%x\n", pid_check);
+    FOUND("pid_check: 0x%x\n", pid_check);
 #else
-    printf("Found pid_check\n");
+    FOUND("pid_check\n");
 #endif
     
     
     convert_port_to_locked_task = find_convert_port_to_locked_task(gPhysBase, KERNEL_SIZE);
     if(convert_port_to_locked_task == 0){
-        printf("ERROR: Failed to get convert_port_to_locked_task\n");
+        ERROR("Failed to get convert_port_to_locked_task\n");
         goto out;
     }
 #ifdef DEBUG
-    printf("Found convert_port_to_locked_task: 0x%x\n", convert_port_to_locked_task);
+    FOUND("convert_port_to_locked_task: 0x%x\n", convert_port_to_locked_task);
 #else
-    printf("Found convert_port_to_locked_task\n");
+    FOUND("convert_port_to_locked_task\n");
 #endif
     
     
     mount_off = find_mount_103(gPhysBase, KERNEL_SIZE);
     if(mount_off == 0){
-        printf("ERROR: Failed to get mount\n");
+        ERROR("Failed to get mount\n");
         goto out;
     }
 #ifdef DEBUG
-    printf("Found mount: 0x%x\n", mount_off);
+    FOUND("mount: 0x%x\n", mount_off);
 #else
-    printf("Found mount\n");
+    FOUND("mount\n");
 #endif
     
     
     mount_union = find_mount_union(gPhysBase, KERNEL_SIZE);
     if(mount_union == 0){
-        printf("ERROR: Failed to get MNT_UNION patch point\n");
+        ERROR("Failed to get MNT_UNION patch point\n");
         goto out;
     }
 #ifdef DEBUG
-    printf("Found MNT_UNION patch point: 0x%x\n", mount_union);
+    FOUND("MNT_UNION patch point: 0x%x\n", mount_union);
 #else
-    printf("Found MNT_UNION patch point\n");
+    FOUND("MNT_UNION patch point\n");
 #endif
     
     
     vm_map_enter = find_vm_map_enter_103(gPhysBase, KERNEL_SIZE);
     if(vm_map_enter == 0){
-        printf("ERROR: Failed to get vm_map_enter\n");
+        ERROR("Failed to get vm_map_enter\n");
         goto out;
     }
 #ifdef DEBUG
-    printf("Found vm_map_enter: 0x%x\n", vm_map_enter);
+    FOUND("vm_map_enter: 0x%x\n", vm_map_enter);
 #else
-    printf("Found vm_map_enter\n");
+    FOUND("vm_map_enter\n");
 #endif
     
     
     vm_map_protect = find_vm_map_protect_103(gPhysBase, KERNEL_SIZE);
     if(vm_map_protect == 0){
-        printf("ERROR: Failed to get vm_map_protect\n");
+        ERROR("Failed to get vm_map_protect\n");
         goto out;
     }
 #ifdef DEBUG
-    printf("Found vm_map_protect: 0x%x\n", vm_map_protect);
+    FOUND("vm_map_protect: 0x%x\n", vm_map_protect);
 #else
-    printf("Found vm_map_protect\n");
+    FOUND("vm_map_protect\n");
 #endif
     
     csops = find_csops_103(gPhysBase, KERNEL_SIZE);
     if(csops == 0){
-        printf("ERROR: Failed to get csops\n");
+        ERROR("Failed to get csops\n");
         goto out;
     }
 #ifdef DEBUG
-    printf("Found csops: 0x%x\n", csops);
+    FOUND("csops: 0x%x\n", csops);
 #else
-    printf("Found csops\n");
+    FOUND("csops\n");
 #endif
     
     
     vm_fault_enter = find_vm_fault_enter_103(gPhysBase, KERNEL_SIZE);
     if(vm_fault_enter == 0){
-        printf("ERROR: Failed to get vm_fault_enter\n");
+        ERROR("Failed to get vm_fault_enter\n");
         goto out;
     }
 #ifdef DEBUG
-    printf("Found vm_fault_enter: 0x%x\n", vm_fault_enter);
+    FOUND("vm_fault_enter: 0x%x\n", vm_fault_enter);
 #else
-    printf("Found vm_fault_enter\n");
+    FOUND("vm_fault_enter\n");
 #endif
     
      
     mapForIO = find_mapForIO_103(gPhysBase, KERNEL_SIZE);
     if(mapForIO == 0){
-        printf("ERROR: Failed to get mapForIO\n");
+        ERROR("Failed to get mapForIO\n");
         goto out;
     }
 #ifdef DEBUG
-    printf("Found mapForIO: 0x%x\n", mapForIO);
+    FOUND("mapForIO: 0x%x\n", mapForIO);
 #else
-    printf("Found mapForIO\n");
+    FOUND("mapForIO\n");
 #endif
     
     
     kernelConfig_stub = find_lwvm_i_can_has_krnl_conf_stub(gPhysBase, KERNEL_SIZE);
     if(kernelConfig_stub == 0){
-        printf("ERROR: Failed to get LwVM::kernelConfig_stub\n");
+        ERROR("Failed to get LwVM::kernelConfig_stub\n");
         goto out;
     }
 #ifdef DEBUG
-    printf("Found LwVM::kernelConfig_stub: 0x%x\n", kernelConfig_stub);
+    FOUND("LwVM::kernelConfig_stub: 0x%x\n", kernelConfig_stub);
 #else
-    printf("Found LwVM::kernelConfig_stub\n");
+    FOUND("LwVM::kernelConfig_stub\n");
 #endif
     
     
     sb_call_i_can_has_debugger = find_sandbox_call_i_can_has_debugger_103(gPhysBase, KERNEL_SIZE);
     if(sb_call_i_can_has_debugger == 0){
-        printf("ERROR: Failed to get sb_call_i_can_has_debugger\n");
+        ERROR("Failed to get sb_call_i_can_has_debugger\n");
         goto out;
     }
 #ifdef DEBUG
-    printf("Found sb_call_i_can_has_debugger: 0x%x\n", sb_call_i_can_has_debugger);
+    FOUND("sb_call_i_can_has_debugger: 0x%x\n", sb_call_i_can_has_debugger);
 #else
-    printf("Found sb_call_i_can_has_debugger\n");
+    FOUND("sb_call_i_can_has_debugger\n");
 #endif
     
     
     amfi_execve_ret = find_amfi_execve_ret(gPhysBase, KERNEL_SIZE);
     if(amfi_execve_ret == 0){
-        printf("ERROR: Failed to get amfi_execve_ret\n");
+        ERROR("Failed to get amfi_execve_ret\n");
         goto out;
     }
 #ifdef DEBUG
-    printf("Found amfi_execve_ret: 0x%x\n", amfi_execve_ret);
+    FOUND("amfi_execve_ret: 0x%x\n", amfi_execve_ret);
 #else
-    printf("Found amfi_execve_ret\n");
+    FOUND("amfi_execve_ret\n");
 #endif
     
     
     amfi_cred_label_update_execve = find_amfi_cred_label_update_execve(gPhysBase, KERNEL_SIZE);
     if(amfi_cred_label_update_execve == 0){
-        printf("ERROR: Failed to get amfi_cred_label_update_execve\n");
+        ERROR("Failed to get amfi_cred_label_update_execve\n");
         goto out;
     }
 #ifdef DEBUG
-    printf("Found amfi_cred_label_update_execve: 0x%x\n", amfi_cred_label_update_execve);
+    FOUND("amfi_cred_label_update_execve: 0x%x\n", amfi_cred_label_update_execve);
 #else
-    printf("Found amfi_cred_label_update_execve\n");
+    FOUND("amfi_cred_label_update_execve\n");
 #endif
     
     
     amfi_vnode_check_signature = find_amfi_vnode_check_signature(gPhysBase, KERNEL_SIZE);
     if(amfi_vnode_check_signature == 0){
-        printf("ERROR: Failed to get amfi_vnode_check_signature\n");
+        ERROR("Failed to get amfi_vnode_check_signature\n");
         goto out;
     }
 #ifdef DEBUG
-    printf("Found amfi_vnode_check_signature: 0x%x\n", amfi_vnode_check_signature);
+    FOUND("amfi_vnode_check_signature: 0x%x\n", amfi_vnode_check_signature);
 #else
-    printf("Found amfi_vnode_check_signature\n");
+    FOUND("amfi_vnode_check_signature\n");
 #endif
     
     
     amfi_loadEntitlementsFromVnode = find_amfi_loadEntitlementsFromVnode(gPhysBase, KERNEL_SIZE);
     if(amfi_loadEntitlementsFromVnode == 0){
-        printf("ERROR: Failed to get amfi_loadEntitlementsFromVnode\n");
+        ERROR("Failed to get amfi_loadEntitlementsFromVnode\n");
         goto out;
     }
 #ifdef DEBUG
-    printf("Found amfi_loadEntitlementsFromVnode: 0x%x\n", amfi_loadEntitlementsFromVnode);
+    FOUND("amfi_loadEntitlementsFromVnode: 0x%x\n", amfi_loadEntitlementsFromVnode);
 #else
-    printf("Found amfi_loadEntitlementsFromVnode\n");
+    FOUND("amfi_loadEntitlementsFromVnode\n");
 #endif
     
     
     amfi_vnode_check_exec = find_amfi_vnode_check_exec(gPhysBase, KERNEL_SIZE);
     if(amfi_vnode_check_exec == 0){
-        printf("ERROR: Failed to get amfi_vnode_check_exec\n");
+        ERROR("Failed to get amfi_vnode_check_exec\n");
         goto out;
     }
 #ifdef DEBUG
-    printf("Found amfi_vnode_check_exec: 0x%x\n", amfi_vnode_check_exec);
+    FOUND("amfi_vnode_check_exec: 0x%x\n", amfi_vnode_check_exec);
 #else
-    printf("Found amfi_vnode_check_exec\n");
+    FOUND("amfi_vnode_check_exec\n");
 #endif
     
     sbops = (uint32_t)find_sbops(gPhysBase, KERNEL_SIZE);
     if(!sbops){
-        printf("ERROR: Failed to get sbops\n");
+        ERROR("Failed to get sbops\n");
         goto out;
     }
 #ifdef DEBUG
-    printf("Found sbops: 0x%x\n", sbops);
+    FOUND("sbops: 0x%x\n", sbops);
 #else
-    printf("Found sbops\n");
+    FOUND("sbops\n");
 #endif
     
     
     launchd_path = find_launchd(gPhysBase, KERNEL_SIZE);
     if(!launchd_path){
-        printf("ERROR: Failed to get launchd path\n");
+        ERROR("Failed to get launchd path\n");
         goto out;
     }
 #ifdef DEBUG
-    printf("Found launchd: 0x%x\n", launchd_path);
+    FOUND("launchd: 0x%x\n", launchd_path);
 #else
-    printf("Found launchd\n");
+    FOUND("launchd\n");
 #endif
     
     
     last_text_region = (uint32_t)find_last_text_region(gPhysBase);
     if(!last_text_region){
-        printf("ERROR: Failed to get last _TEXT region\n");
+        ERROR("Failed to get last _TEXT region\n");
         goto out;
     }
 #ifdef DEBUG
-    printf("Found last _TEXT region: 0x%x\n", last_text_region);
+    FOUND("last _TEXT region: 0x%x\n", last_text_region);
 #else
-    printf("Found last _TEXT region\n");
+    FOUND("last _TEXT region\n");
 #endif
     
     last_text_region -= slide; /* unslide */
@@ -726,13 +728,13 @@ _main(void* boot, void *ptr, boot_args *arg)
     execve = sbops+offsetof(struct mac_policy_ops, mpo_cred_label_update_execve);
     execve_ptr = *(uint32_t*)execve;
     if(!execve_ptr){
-        printf("ERROR: Failed to get sandbox mpo_cred_label_update_execve\n");
+        ERROR("Failed to get sandbox mpo_cred_label_update_execve\n");
         goto out;
     }
 #ifdef DEBUG
-    printf("Found mpo_cred_label_update_execve: 0x%08x\n", execve_ptr);
+    FOUND("mpo_cred_label_update_execve: 0x%08x\n", execve_ptr);
 #else
-    printf("Found mpo_cred_label_update_execve\n");
+    FOUND("mpo_cred_label_update_execve\n");
 #endif
     
     
@@ -747,21 +749,23 @@ _main(void* boot, void *ptr, boot_args *arg)
     ret0_gadget = last_text_region + 0x1A8 + 1;
     ret1_gadget = last_text_region + 0x1AC + 1;
 #ifdef DEBUG
-    printf("Setup shellcode: 0x%08x\n", last_text_region);
-    printf("Setup ret0_gadget: 0x%08x\n", ret0_gadget);
-    printf("Setup ret1_gadget: 0x%08x\n", ret1_gadget);
+    printf("[Setup] shellcode: 0x%08x\n", last_text_region);
+    printf("[Setup] ret0_gadget: 0x%08x\n", ret0_gadget);
+    printf("[Setup] ret1_gadget: 0x%08x\n", ret1_gadget);
 #else
-    printf("Setup shellcode!\n");
+    printf("[Setup] shellcode\n");
 #endif
     
     wk32(execve, (last_text_region+4) + 1);
 #ifdef DEBUG
-    printf("Hook sandbox mpo_cred_label_update_execve: 0x%08x\n", (last_text_region+4) + 1);
+    printf("[Hook] sandbox mpo_cred_label_update_execve: 0x%08x\n", (last_text_region+4) + 1);
 #else
-    printf("Hook sandbox mpo_cred_label_update_execve\n");
+    printf("[Hook] sandbox mpo_cred_label_update_execve\n");
 #endif
     
+    
     /* kpatch */
+    printf("[*] patching kernel...\n");
     patch_tfp0(pid_check, convert_port_to_locked_task);
     
     patch_vm_fault_enter(vm_fault_enter);
@@ -815,34 +819,38 @@ _main(void* boot, void *ptr, boot_args *arg)
         POLICY_OPS(sbops+offsetof(struct mac_policy_ops, mpo_proc_check_get_cs_info), ret0_gadget);
         POLICY_OPS(sbops+offsetof(struct mac_policy_ops, mpo_proc_check_set_cs_info), ret0_gadget);
         
-        printf("Apply sbops\n");
+        PATCHED("sbops\n");
         
     }
     
     {
-        printf("AMFI: patching amfi\n");
+        printf("[AMFI] patching amfi\n");
         patch_amfi_ret(amfi_execve_ret, last_text_region, gPhysBase+0x1000);
         patch_amfi_cred_label_update_execve(amfi_cred_label_update_execve);
         patch_amfi_vnode_check_signature(amfi_vnode_check_signature);
         patch_amfi_loadEntitlementsFromVnode(amfi_loadEntitlementsFromVnode);
         patch_amfi_vnode_check_exec(amfi_vnode_check_exec);
         wk32(i_can_has_debugger, 0x47702001);
-        printf("AMFI: done!\n");
+        printf("[AMFI] done!\n");
         
     }
     
     if(RDSK_BOOT == 0){
         wk32(launchd_path+1, 0x78786168);
-        printf("Apply: launchd patch\n");
+        PATCHED("launchd\n");
     }
     
+    
+    printf("[*] Done!\n");
+    
     printf("Booting...\n");
+    printf("\n");
     
     prepare_and_jump(boot, ptr, arg);
     return 0;
     
 out:
-    printf("ERROR: Failed to boot!\n");
+    ERROR("Failed to boot!\n");
 loop:
     loop();
     goto loop;

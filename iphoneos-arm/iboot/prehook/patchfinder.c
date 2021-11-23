@@ -25,6 +25,7 @@
 #define GET_ENV_UINT_SEARCH "bootdelay"
 #define DISPLAY_TIMING_SEARCH "display-timing"
 #define GET_ENV_SEARCH "boot-device"
+#define PRINTF_SEARCH "Entering recovery mode, starting command prompt"
 #define VERSION_OFFSET 0x280 + 6
 
 /*---- synackuk atropine ----*/
@@ -245,6 +246,24 @@ uint32_t find_display_height() {
         return 0;
     }
     return *(uint32_t*)height;
+}
+
+printf_t find_printf() {
+    uintptr_t* ldr;
+    uintptr_t* bl;
+    uintptr_t* ref;
+    
+    
+    ldr = find_next_LDR_insn_with_string(PRINTF_SEARCH, strlen(PRINTF_SEARCH));
+    bl = bl_search_down(ldr, 8);
+    if (!bl) {
+        return 0;
+    }
+    ref = resolve_bl32(bl);
+    if (!ref) {
+        return 0;
+    }
+    return (printf_t)((uintptr_t)ref);
 }
 
 /*

@@ -3,6 +3,8 @@
 
 function clean(){
 
+  rm -rf ./version_new.h
+  rm -rf ./version_old.h
   rm -rf payload
   rm -rf payload_rd
 
@@ -45,6 +47,21 @@ if [ $# == 1 ]; then
 fi
 
 clean
+
+while read line
+do
+echo $line | grep systemVer >> ./version_new.h
+echo $line | grep majorVer >> ./version_new.h
+minorVer=$(echo $line | sed -n -e 's/^.*#define minorVer //p')
+done < ./version.h
+
+newVer=$(echo $minorVer \+ 1 | bc)
+
+echo "#define minorVer "$newVer"" >> ./version_new.h
+
+mv ./version.h ./version_old.h
+mv ./version_new.h ./version.h
+rm -rf ./version_old.h
 
 cd hook/
 make
