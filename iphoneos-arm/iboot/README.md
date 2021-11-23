@@ -17,4 +17,4 @@ The license for this entire project is GPLv3, but if the license is listed in th
 xerub for ibex  
 planetbeing for patchfinder  
 synackuk for atropine  
-checkra1n team for kernel patches  
+checkra1n team for kernel patch 
