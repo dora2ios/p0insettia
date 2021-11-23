@@ -53,4 +53,4 @@ Some other jailbreak apps may require this entitlement.
 - @xerub for the [ibex](https://github.com/xerub/ibex)  
 - @libimobiledevice for the [libirecovery](https://github.com/libimobiledevice/libirecovery)  
 - @synackuk for the [atropine](https://github.com/synackuk/atropine)  
-- checkra1n team for the kernel patche methods  
+- checkra1n team for the kernel patch method  
