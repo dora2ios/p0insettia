@@ -50,3 +50,7 @@ The device will reboot and boot in non-jailbreak mode. If you want to boot in a 
 ```
 ./tethered_boot.sh
 ```
+
+## LICENSE
+hfsplus & xpwntool: GPL-3.0 [original](https://github.com/planetbeing/xpwn)  
+irecovery: LGPL-v2.1 [original](https://github.com/libimobiledevice/libirecovery)  
