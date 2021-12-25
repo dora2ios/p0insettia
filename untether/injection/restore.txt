@@ -1,0 +1,12 @@
+restored_external patch
+
+// mount system 
+000042d4         bl         sub_9fb4 		<- movs r0, #0
+
+// fix ver
+00004376         bl         sub_a150            <- movs r0, #0
+
+// unmount system
+00004120         bl         sub_a0f4            <- movs r0, #0
+0000424e         bl         sub_a0f4            <- movs r0, #0
+00004428         bl         sub_a0f4            <- movs r0, #0
