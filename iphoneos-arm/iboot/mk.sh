@@ -7,6 +7,7 @@ function clean(){
   rm -rf ./version_old.h
   rm -rf payload
   rm -rf payload_rd
+  rm -rf payload_untether
 
   cd hook/
   make clean
@@ -27,6 +28,7 @@ function clean(){
   rm -rf maker
   rm -rf payload
   rm -rf payload_rd
+  rm -rf payload_untether
   cd ..
 
 }
@@ -74,7 +76,8 @@ cd ../
 
 cd maker
 gcc maker.c -o maker
-./maker ../hook/payload ../prehook/payload payload_rd payload
+./maker ../hook/payload ../prehook/payload payload_rd payload payload_untether
 mv -v payload ..
 mv -v payload_rd ..
+mv -v payload_untether ..
 cd ..

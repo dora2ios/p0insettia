@@ -37,6 +37,7 @@ int main(int argc, char **argv){
     char *pre;
     char *out1;
     char *out2;
+    char *out3;
     void *payload;
     void *prehook;
     size_t p_sz;
@@ -46,8 +47,8 @@ int main(int argc, char **argv){
     uint32_t val;
     uint32_t search[4];
     
-    if(argc != 5){
-        printf("%s <payload> <prehook> <out1> <out2>\n", argv[0]);
+    if(argc != 6){
+        printf("%s <payload> <prehook> <out1> <out2> <out3>\n", argv[0]);
         return 0;
     }
     
@@ -55,6 +56,7 @@ int main(int argc, char **argv){
     pre = argv[2];
     out1 = argv[3];
     out2 = argv[4];
+    out3 = argv[5];
     
     open_file(p, &p_sz, &payload);
     open_file(pre, &pre_sz, &prehook);
@@ -116,6 +118,29 @@ int main(int argc, char **argv){
     }
     
     fwrite(prehook, pre_sz, 1, fd);
+    fflush(fd);
+    fclose(fd);
+    
+    // untether
+    val = 0xdeadfeed;
+    off = (uint32_t)memmem(payload, p_sz, &val, 4);
+    if(!off){
+        printf("failed to get rdsk_boot\n");
+        return -1;
+    }
+    
+    off = off-(uint32_t)payload;
+    
+    *(uint32_t*)(payload + off) = 0;
+    
+    printf("creating payload3...\n");
+    fd = fopen(out3, "w");
+    if (!fd) {
+        printf("error opening %s\n", out3);
+        return -1;
+    }
+    
+    fwrite(payload, p_sz, 1, fd);
     fflush(fd);
     fclose(fd);
     

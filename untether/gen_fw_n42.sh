@@ -60,7 +60,7 @@ mv fw/Firmware/dfu/"$IBEC".dfu fw/Firmware/dfu/"$IBEC"_TMP.dfu
 ../build/xpwntool fw/Firmware/dfu/"$IBEC".pwnd fw/Firmware/dfu/"$IBEC".dfu -t fw/Firmware/dfu/"$IBEC"_TMP.dfu
 
 # pyld 
-../build/xpwntool ../iphoneos-arm/iboot/hook/payload fw/Firmware/all_flash/all_flash."$DEVICE".production/applelogoP@2x~iphone.s5l8950x.img3 -t src/pyld_template.img3
+../build/xpwntool ../iphoneos-arm/iboot/payload_untether fw/Firmware/all_flash/all_flash."$DEVICE".production/applelogoP@2x~iphone.s5l8950x.img3 -t src/pyld_template.img3
 
 # m
 cp -a -v injection/firmware/"$FWBUNDLE"/manifest fw/Firmware/all_flash/all_flash."$DEVICE".production/
