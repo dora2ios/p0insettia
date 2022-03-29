@@ -1,9 +1,6 @@
 #!/bin/bash
 
-gcc -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.2.sdk -arch armv7 main.c -o launchd -framework CoreFoundation -framework IOKit -Os -Wno-deprecated-declarations -DDEBUG -DRAMDISK_BOOT
-
-#!/bin/sh
-
+#gcc -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.2.sdk -arch armv7 main.c -o launchd -framework CoreFoundation -framework IOKit -Os -Wno-deprecated-declarations -DDEBUG -DRAMDISK_BOOT
 
 function clean(){
 
@@ -12,7 +9,7 @@ rm -rf launchd
 }
 
 function build(){
-gcc -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.2.sdk -arch armv7 main.c -o launchd -framework CoreFoundation -framework IOKit -Os -Wno-deprecated-declarations $1
+xcrun -sdk iphoneos gcc -arch armv7 main.c -o launchd -framework CoreFoundation -framework IOKit -Os -Wno-deprecated-declarations $1
 }
 
 function cs(){
