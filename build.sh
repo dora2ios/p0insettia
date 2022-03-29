@@ -33,10 +33,11 @@ function injector(){
 }
 
 function pwnder(){
-  echo "pwnder"
+  echo "ipwnder_lite"
 
-  cd pwnder/
-  ./mk_macosx.sh
+  cd ipwnder_lite/
+  make all
+  mv -v ipwnder_macosx ../build/ipwnder_lite
   cd ..
 }
 
