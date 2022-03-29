@@ -291,6 +291,7 @@ static int make_dir(const char *path)
 int main(void)
 {
     int r = -1;
+    char *restore_url = NULL;
     char *url = NULL;
     
     if (make_dir("fw/") == 0) {
@@ -312,34 +313,48 @@ int main(void)
     if(r != 0) return -1;
     
 #ifdef N42
+    restore_url = "https://secure-appldnld.apple.com/iOS7.1/031-4798.20140627.fpeqS/iPhone5,2_7.1.2_11D257_Restore.ipsw";
+    
     if (make_dir("fw/Firmware/all_flash/all_flash.n42ap.production/") != 0) {
         return -1;
     }
+    
 #ifdef BUILD_11D257
     // basefw: 7.1.2 [11D257]
     r = -1;
     url = "https://secure-appldnld.apple.com/iOS7.1/031-4798.20140627.fpeqS/iPhone5,2_7.1.2_11D257_Restore.ipsw";
+#endif
+    
+#ifdef BUILD_11D201
+    // untested
+    r = -1;
+    url = "https://secure-appldnld.apple.com/iOS7.1/031-00272.20140425.YvPzG/iPhone5,2_7.1.1_11D201_Restore.ipsw";
+#endif
+    
+#ifdef BUILD_11D167
+    // untested
+    r = -1;
+    url = "https://secure-appldnld.apple.com/iOS7.1/031-00272.20140425.YvPzG/iPhone5,2_7.1.1_11D201_Restore.ipsw";
+#endif
     
     // ramdisk
-    if(dl_file(url, "058-4276-009.dmg", "fw/058-4276-009.dmg") != 0) {
+    if(dl_file(restore_url, "058-4276-009.dmg", "fw/058-4276-009.dmg") != 0) {
         return -1;
     }
-    
-#endif
     // restorekc
-    if(dl_file(url, "kernelcache.release.n42", "fw/kernelcache.release.n42") != 0) {
+    if(dl_file(restore_url, "kernelcache.release.n42", "fw/kernelcache.release.n42") != 0) {
         return -1;
     }
     // ibec
-    if(dl_file(url, "Firmware/dfu/iBEC.n42ap.RELEASE.dfu", "fw/Firmware/dfu/iBEC.n42ap.RELEASE.dfu") != 0) {
+    if(dl_file(restore_url, "Firmware/dfu/iBEC.n42ap.RELEASE.dfu", "fw/Firmware/dfu/iBEC.n42ap.RELEASE.dfu") != 0) {
         return -1;
     }
     // ibss
-    if(dl_file(url, "Firmware/dfu/iBSS.n42ap.RELEASE.dfu", "fw/Firmware/dfu/iBSS.n42ap.RELEASE.dfu") != 0) {
+    if(dl_file(restore_url, "Firmware/dfu/iBSS.n42ap.RELEASE.dfu", "fw/Firmware/dfu/iBSS.n42ap.RELEASE.dfu") != 0) {
         return -1;
     }
     // restore devicetree
-    if(dl_file(url, "Firmware/all_flash/all_flash.n42ap.production/DeviceTree.n42ap.img3", "fw/Firmware/all_flash/all_flash.n42ap.production/DeviceTree.n42ap.img3") != 0) {
+    if(dl_file(restore_url, "Firmware/all_flash/all_flash.n42ap.production/DeviceTree.n42ap.img3", "fw/Firmware/all_flash/all_flash.n42ap.production/DeviceTree.n42ap.img3") != 0) {
         return -1;
     }
     // applelogo
@@ -398,11 +413,11 @@ int main(void)
 #endif
     
     // bm
-    if(dl_file(url, "BuildManifest.plist", "fw/BuildManifest.plist") != 0) {
+    if(dl_file(restore_url, "BuildManifest.plist", "fw/BuildManifest.plist") != 0) {
         return -1;
     }
     // rp
-    if(dl_file(url, "Restore.plist", "fw/Restore.plist") != 0) {
+    if(dl_file(restore_url, "Restore.plist", "fw/Restore.plist") != 0) {
         return -1;
     }
     
