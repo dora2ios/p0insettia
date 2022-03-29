@@ -14,10 +14,8 @@ A tool for [(semi-){un-(tethered jailbreak)}] of iOS 10.3.4 ~~32-bit devices~~ i
 
 ## Make
 ```
+git clone https://github.com/dora2-iOS/p0insettia --recursive && cd p0insettia
 ./build.sh all
-cd build
-./dl_files
-ramdisk_gen.sh
 ```
 
 ## semi-tethered jailbreak

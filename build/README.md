@@ -7,6 +7,12 @@ All at your own risk!
 ## Supported environments
 - macOS 10.13 (or later?) (intel/x86_64)
 
+## setup
+```
+./dl_files
+./ramdisk_gen.sh
+```
+
 ## Usage 
 ### Install loader / cydia  
 The first step is to add the loader app to the rootfs of the device.  
