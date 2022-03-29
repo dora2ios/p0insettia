@@ -28,7 +28,7 @@ The pre-built IPA file can be obtained from: [p0insettia](https://dora2ios.web.a
 You can use ReProvision Reborn (via [Packix](https://repo.packix.com/)) or similar to install and use IPA files on your device. All at your own risk.   
 
 ## untethered jailbreak
-It uses an iBoot(iOS 7 iBoot) exploit based jailbreak. (ETA SON)   
+It uses an iBoot(iOS 7 iBoot) exploit based jailbreak. (ETA NOW)   
 
 ## Note for this jailbreak environment (iOS 10.3 or higher)  
 This jailbreak will not apply the nuke sandbox patch used by h3lix.  

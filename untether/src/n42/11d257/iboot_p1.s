@@ -1,6 +1,6 @@
 @ iboot_p1.s
 @
-@ Copyright (c) 2021 @dora2ios
+@ Copyright (c) 2021-2022 @dora2ios
 @
 @ This program is free software: you can redistribute it and/or modify
 @ it under the terms of the GNU General Public License as published by
@@ -16,6 +16,10 @@
 @ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 @
 
+
+@ Build version : 2.0
+@ iBoot version : iBoot-1940.10.58
+@ Device        : N42AP
 
     .text
     .syntax    unified
@@ -149,7 +153,7 @@ _payload:
 
     ldr    r0, =0xbff47a7c      @ src
     ldr    r1, =0x84043240      @ payload start
-    movs   r2, #0x6c            @ sz
+    movs   r2, #0xc0            @ sz
     blx    _bcopy
 
     @ apply desired patches

@@ -5,6 +5,11 @@ build/dl_files
 build/image3
 build/ipwnder_lite
 untether/image3
+untether/fw
+untether/gen_fw
+untether/version.xml
+untether/restorenand*
+untether/shsh/*.shsh
 iphoneos-arm/launchd/launchd
 iphoneos-arm/rdsk/restored_external
 iphoneos-arm/iboot/payload
